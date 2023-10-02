@@ -4,17 +4,17 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please tell us your name!"],
+    required: [true, "Please tell us your name!"]
   },
   email: {
     type: String,
     required: [true, "Please provide your email"],
     unique: true,
-    lowercase: true,
+    lowercase: true
   },
   password: {
     type: String,
-    required: [true, "Please provide a password"],
+    required: [true, "Please provide a password"]
   },
   passwordConfirm: {
     type: String,
@@ -23,12 +23,12 @@ const userSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-      message: "Passwords are not the same!",
-    },
+      message: "Passwords are not the same!"
+    }
   },
   address: String,
   private_key: String,
-  mnemonic: String,
+  mnemonic: String
 });
 
 userSchema.pre("save", async function (next) {
