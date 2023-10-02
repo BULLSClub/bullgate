@@ -184,7 +184,7 @@ function getSelectedNetwork(e) {
     document.getElementById("network").style.display = "none";
   }
   else if (e.target.innerHTML === "Binance Smart Chain Mainnet") {
-    providerURL ="https://bsc.drpc.org/";
+    providerURL ="https://empty-misty-pine.bsc.discover.quiknode.pro/8ba631164b4005b453395373c286a22fa65980cc/";
     document.getElementById("network").style.display = "none";
 
 
