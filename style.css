@@ -488,3 +488,30 @@ textarea {
 }
 
 /* //CHECK BOX */
+.fade-in {
+  opacity: 0; /* Start with 0 opacity */
+  animation: fadeIn 1s ease-in forwards; /* Animation name, duration, timing function, and fill mode */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start from 0 opacity */
+  }
+  to {
+    opacity: 1; /* End at 1 opacity */
+  }
+}
+.fade-in-breathe {
+  animation: fadeInBreathe 4s ease-in-out infinite; /* Animation name, duration, timing function, and infinite loop */
+}
+
+@keyframes fadeInBreathe {
+  0%, 100% {
+    opacity: 1; /* Start and end with full opacity */
+    transform: scale(1); /* Start and end with the original size */
+  }
+  50% {
+    opacity: 1; /* Maintain full opacity during the breathing effect */
+    transform: scale(1.1); /* Enlarge the image at 50% of animation duration */
+  }
+}
