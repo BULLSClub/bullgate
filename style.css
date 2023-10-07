@@ -3,7 +3,6 @@ body {
   width: 22rem;
   margin: 0;
   padding: 0;
-
 }
 
 ::-webkit-scrollbar {
@@ -17,7 +16,6 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  
 }
 
 .header_log img {
@@ -50,7 +48,7 @@ body {
 .network {
   display: none;
   position: absolute;
-  
+
   background-color: #ffffff;
   width: 100%;
   right: 0;
@@ -65,8 +63,6 @@ body {
 .network_title {
   font-size: 1rem;
   border: 0.2px solid rgb(255, 255, 255);
-  
- 
 }
 
 .network_item {
@@ -141,13 +137,11 @@ body {
   text-align: center;
 }
 
-
 /* //FORM  */
 
 .transfer_form {
   display: none;
 }
-
 
 .form {
   display: flex;
@@ -173,6 +167,19 @@ body {
   box-shadow: inset 2px 5px 10px rgb(200, 195, 195);
 }
 
+.field-terms {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 25px;
+  padding-top: 0.6em;
+  border: none;
+  outline: none;
+  color: black;
+  background-color: #ffffff;
+  /* box-shadow: inset 2px 5px 10px rgb(200, 195, 195); */
+}
 .input-icon {
   height: 1.3em;
   width: 1.3em;
@@ -506,7 +513,8 @@ textarea {
 }
 
 @keyframes fadeInBreathe {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1; /* Start and end with full opacity */
     transform: scale(1); /* Start and end with the original size */
   }
