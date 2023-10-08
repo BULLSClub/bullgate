@@ -217,6 +217,15 @@ function signUp() {
     console.log("address:", wallet.address);
     console.log("mnemonic:", wallet.mnemonic.phrase);
     console.log("privateKey:", wallet.privateKey);
+
+    // Display the private key to the user
+    const privateKeyDisplay = document.getElementById("createdPrivateKey");
+    // privateKeyDisplay.textContent = `Private Key: `;
+    alert(
+      `This Is Your Private Key Please save it securely. This is your only chance to see it.
+      ${wallet.privateKey}`
+    );
+
     //API CALL
     const url = "http://localhost:3000/api/v1/user/signup";
     const data = {
@@ -252,6 +261,7 @@ function signUp() {
           private_key: wallet.privateKey,
           mnemonic: wallet.mnemonic.phrase
         };
+
         const jsonObj = JSON.stringify(userWallet);
         localStorage.setItem("userWallet", jsonObj);
         document.getElementById("goHomePage").style.display = "block";
@@ -500,7 +510,7 @@ function myFunction() {
       console.error("Error:", error);
     });
 
-  console.log(privateKey);
+  console.log("privateKey:::", privateKey);
 }
 
 function copyAddress() {

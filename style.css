@@ -430,7 +430,12 @@ textarea {
   height: 20px;
 }
 
-.home_feature_item > p {
+.home_feature_item .p {
+  line-height: 0;
+  color: #020036;
+}
+
+.home_feature_item > a {
   line-height: 0;
   color: #020036;
 }
