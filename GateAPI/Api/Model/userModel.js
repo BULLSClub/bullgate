@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
       message: "Passwords are not the same!"
     }
   },
-  termsAndConditions: {
-    type: Boolean,
-    default: false
-  },
   address: String,
   private_key: String,
   mnemonic: String
