@@ -49,7 +49,7 @@
                   />
                 </g>
               </svg>
-              <span id="selected_network">Binance</span>
+              <span id="selected_network">Polygon</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -293,6 +293,21 @@
           <button id="openCreate" class="button3 connectWallet">
             Create Account
           </button>
+          <div>
+            <input
+              type="checkbox"
+              id="accept_terms"
+              name="accept_terms"
+              required
+            />
+            <label>
+              By Creating An Account You Are Agreeing To The<br />
+              <span id="terms_link" class="terms_link"
+                >Terms And Conditions</span
+              >
+            </label>
+          </div>
+          <span class="error" id="accept_terms_error"></span>
           <p>
             Login to your account
             <strong class="home_title" id="loginAccount"> LOGIN</strong>
@@ -303,6 +318,7 @@
         <div id="create_popUp" class="create_popUp">
           <div class="form" id="signup-form">
             <p id="heading">Create Account</p>
+
             <div id="field">
               <div class="field">
                 <svg
@@ -390,17 +406,6 @@
                   id="sign_up_passwordConfirm"
                 />
               </div>
-              <div class="field-terms">
-                <input
-                  type="checkbox"
-                  id="accept_terms"
-                  name="accept_terms"
-                  class="accept_terms"
-                  required
-                />
-                <label>I accept the terms&conditions</label>
-              </div>
-              <span class="error" id="accept_terms_error"></span>
             </div>
 
             <!-- <p class="space"></p> -->
@@ -781,7 +786,7 @@
       src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
       type="application/javascript"
     ></script>
-    <script src="./ethers.js"></script>
+    <!-- <script src="./ethers.js"></script> -->
     <script src="./popup.js"></script>
   </body>
 </html>

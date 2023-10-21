@@ -487,6 +487,10 @@ textarea {
   margin-top: 17px;
   margin-right: 5px;
 }
+.terms_link {
+  font-weight: 800;
+  text-decoration: underline;
+}
 .accountData {
   word-wrap: break-word;
 }

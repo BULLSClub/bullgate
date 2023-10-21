@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
 });
+document.getElementById("terms_link").addEventListener("click", function () {
+  window.location.href = "https://www.mongodb.com/";
+});
 
 let providerURL =
   "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
@@ -82,9 +85,9 @@ const allToken = [
     symbol: "BULLSC"
   },
   {
-    name: "BULLS", // Replace with the token's name
-    address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7", // Replace with the token's BSC address
-    symbol: "BULLS" // Replace with the token's symbol
+    name: "BULLS",
+    address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7",
+    symbol: "BULLS"
   }
 ];
 
@@ -110,6 +113,7 @@ function handler() {
 
   var a = document.getElementById("link");
   a.href = "somelink url";
+
   wallet.sendTransaction(tx).then((txObj) => {
     console.log("txHash", txObj.hash);
     document.getElementById("transfer_center").style.display = "none";
@@ -190,25 +194,23 @@ function createUser() {
 }
 
 function openCreate() {
-  document.getElementById("createAccount").style.display = "none";
-  document.getElementById("create_popUp").style.display = "block";
+  const acceptTermsCheckbox = document.getElementById("accept_terms");
+  if (acceptTermsCheckbox.checked) {
+    document.getElementById("createAccount").style.display = "none";
+    document.getElementById("create_popUp").style.display = "block";
+  } else {
+    alert("Please accept the terms and conditions.");
+  }
 }
 
 function signUp() {
   const name = document.getElementById("sign_up_name").value;
   const email = document.getElementById("sign_up_email").value;
   const password = document.getElementById("sign_up_password").value;
-  const acceptTermsCheckbox = document.getElementById("accept_terms");
 
   const passwordConfirm = document.getElementById(
     "sign_up_passwordConfirm"
   ).value;
-
-  if (!acceptTermsCheckbox.checked) {
-    window.alert("Please accept the terms and conditions.");
-    return;
-  }
-  document.getElementById("accept_terms_error").textContent = "";
 
   document.getElementById("field").style.display = "none";
   document.getElementById("center").style.display = "block";
@@ -221,13 +223,11 @@ function signUp() {
     console.log("mnemonic:", wallet.mnemonic.phrase);
     console.log("privateKey:", wallet.privateKey);
 
-    // Display the private key to the user
     const privateKeyDisplay = document.getElementById("createdPrivateKey");
-    // privateKeyDisplay.textContent = `Private Key: `;
-    alert(
-      `This Is Your Private Key Please save it securely. This is your only chance to see it.
-      ${wallet.privateKey}`
-    );
+    // alert(
+    //   `This Is Your Private Key Please save it securely. This is your only chance to see it.
+    //   ${wallet.privateKey}`
+    // );
 
     //API CALL
     const url = "http://localhost:3000/api/v1/user/signup";
@@ -445,7 +445,7 @@ function myFunction() {
   const str = localStorage.getItem("userWallet");
   const parsedObj = JSON.parse(str);
 
-  if (parsedObj.address) {
+  if (parsedObj?.address) {
     document.getElementById("LoginUser").style.display = "none";
     document.getElementById("home").style.display = "block";
     privateKey = parsedObj.private_key;
@@ -456,11 +456,13 @@ function myFunction() {
 
   const tokenRender = document.querySelector(".assets");
   const accountRender = document.querySelector(".accountList");
+
   //API CALL
 
   fetch("http://localhost:3000/api/v1/tokens/alltoken")
     .then((response) => response.json())
     .then((data) => {
+      console.log("dataapicall", data);
       let elements = "";
       data.data.tokens.map(
         (token) =>
@@ -490,6 +492,7 @@ function myFunction() {
   fetch("http://localhost:3000/api/v1/account/allaccount")
     .then((response) => response.json())
     .then((data) => {
+      console.log("accountData", data);
       let accounts = "";
       data.data.accounts.map(
         (account, i) =>
@@ -514,6 +517,8 @@ function myFunction() {
     });
 
   console.log("privateKey:::", privateKey);
+
+  console.log("address:::", address);
 }
 
 function copyAddress() {
