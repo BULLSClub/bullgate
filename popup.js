@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("accountList")
     .addEventListener("click", changeAccount);
   document.getElementById("userAddress").addEventListener("click", copyAddress);
+  document.getElementById("copyAdress").addEventListener("click", copyAddress);
+
   document.getElementById("transferFund").addEventListener("click", handler);
 
   document
@@ -105,6 +107,7 @@ function handler() {
     to: address,
     value: ethers.utils.parseEther(amount)
   };
+
   var a = document.getElementById("link");
   a.href = "somelink url";
   wallet.sendTransaction(tx).then((txObj) => {

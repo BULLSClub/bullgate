@@ -476,7 +476,17 @@ textarea {
   height: 50px;
   list-style: 0;
 }
+.Adress {
+  justify-content: space-between;
 
+  display: flex;
+}
+.copyAdressIcon {
+  width: 15px;
+  height: 15px;
+  margin-top: 17px;
+  margin-right: 5px;
+}
 .accountData {
   word-wrap: break-word;
 }
