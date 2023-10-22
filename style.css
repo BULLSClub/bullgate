@@ -528,7 +528,7 @@ textarea {
   }
 }
 .fade-in-breathe {
-  animation: fadeInBreathe 4s ease-in-out infinite; /* Animation name, duration, timing function, and infinite loop */
+  animation: fadeInBreathe 2s ease-in-out infinite; /* Animation name, duration, timing function, and infinite loop */
 }
 
 @keyframes fadeInBreathe {
