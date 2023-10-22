@@ -262,6 +262,16 @@ function signUp() {
         document.getElementById("accountData").style.display = "block";
         document.getElementById("sign_up").style.display = "none";
 
+        const continueButton = document.createElement("button");
+        continueButton.innerHTML = "Continue to Your Wallet";
+        continueButton.addEventListener("click", function () {
+          // Redirect or perform any action to proceed to the wallet
+          // For example: window.location.href = "your_wallet_page.html";
+          document.getElementById("goHomePage").style.display = "block";
+          window.location.reload();
+        });
+        document.getElementById("accountData").appendChild(continueButton);
+
         const userWallet = {
           address: wallet.address,
           private_key: wallet.privateKey,
@@ -270,9 +280,6 @@ function signUp() {
 
         const jsonObj = JSON.stringify(userWallet);
         localStorage.setItem("userWallet", jsonObj);
-        document.getElementById("goHomePage").style.display = "block";
-
-        window.location.reload();
       })
       .catch((error) => {
         // Handle any errors
@@ -495,7 +502,7 @@ function myFunction() {
   fetch("http://localhost:3000/api/v1/account/allaccount")
     .then((response) => response.json())
     .then((data) => {
-      console.log("accountData", data);
+      // console.log("accountData", data);
       let accounts = "";
       data.data.accounts.map(
         (account, i) =>
