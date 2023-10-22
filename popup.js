@@ -67,7 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", addAcount);
 });
 document.getElementById("terms_link").addEventListener("click", function () {
-  window.location.href = "https://www.mongodb.com/";
+  window.location.href = "https://bullsclub.space/bullsclub-space/terms-conditions/";
+});
+document.getElementById("terms_link1").addEventListener("click", function () {
+  window.location.href = "https://bullsclub.space/bullsclub-space/faq/privacy-policy/";
 });
 
 let providerURL =
