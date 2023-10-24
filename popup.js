@@ -440,7 +440,7 @@ function myFunction() {
           <div class="assets_item">
           <img
             class="assets_item_img"
-            src="./assets/theblockchaincoders.png"
+            src="./assets/05.jpg"
             alt=""
           />
     
