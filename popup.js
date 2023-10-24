@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("accountList")
     .addEventListener("click", changeAccount);
   document.getElementById("userAddress").addEventListener("click", copyAddress);
-  document.getElementById("copyAdress").addEventListener("click", copyAddress);
-
   document.getElementById("transferFund").addEventListener("click", handler);
 
   document
@@ -33,9 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("open_Transfer")
     .addEventListener("click", openTransfer);
-  document.getElementById("open_Buy").addEventListener("click", function () {
-    window.location.href = "https://www.binance.com/en/how-to-buy/polygon";
-  });
+
   document.getElementById("goBack").addEventListener("click", goBack);
 
   document.getElementById("open_Import").addEventListener("click", openImport);
@@ -66,32 +62,21 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
 });
-document.getElementById("terms_link").addEventListener("click", function () {
-  window.location.href = "https://bullsclub.space/bullsclub-space/terms-conditions/";
-});
-document.getElementById("terms_link1").addEventListener("click", function () {
-  window.location.href = "https://bullsclub.space/bullsclub-space/faq/privacy-policy/";
-});
 
 let providerURL =
-  "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
+  "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K";
 
 const allToken = [
   {
     name: "MATIC",
     address: "0x0000000000000000000000000000000000001010",
-    symbol: "MATIC"
+    symbol: "MATIC",
   },
   {
     name: "BULLSCLUB",
-    address: "0x489F35233247C4fA43B81ed09532673e7b801c39",
-    symbol: "BULLSC"
+    address: "0xb309098bcB51E5C687a16FA41bD6055f47c9eBb0",
+    symbol: "BULLS",
   },
-  {
-    name: "BULLS",
-    address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7",
-    symbol: "BULLS"
-  }
 ];
 
 let privateKey;
@@ -99,19 +84,23 @@ let address;
 
 function handler() {
   document.getElementById("transfer_center").style.display = "flex";
+
   const amount = document.getElementById("amount").value;
   const address = document.getElementById("address").value;
-  p = "b87aa9f183ecee2e1a55bcd4857b564364b70373861d08b68ff81fa4a2957a66";
-  a = "0x3f561Ab641afBBBFcD949F716d8EA4eb34154D45";
+
+  p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
+  a = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
   //PROVIDER
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
+    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
   );
+
   let wallet = new ethers.Wallet(privateKey, provider);
+
   const tx = {
     to: address,
-    value: ethers.utils.parseEther(amount)
+    value: ethers.utils.parseEther(amount),
   };
 
   var a = document.getElementById("link");
@@ -121,7 +110,7 @@ function handler() {
     console.log("txHash", txObj.hash);
     document.getElementById("transfer_center").style.display = "none";
     const a = document.getElementById("link");
-    a.href = `https://polygonscan.com/tx/${txObj.hash}`;
+    a.href = `https://mumbai.polygonscan.com/tx/${txObj.hash}`;
     document.getElementById("link").style.display = "block";
   });
 }
@@ -129,7 +118,7 @@ function handler() {
 function checkBlance(address) {
   //PROVIDER
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
+    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
   );
   provider.getBalance(address).then((balance) => {
     const balanceInEth = ethers.utils.formatEther(balance);
@@ -156,19 +145,14 @@ function getSelectedNetwork(e) {
 
   if (e.target.innerHTML === "Ethereum Mainnet") {
     providerURL =
-      "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW";
+      "https://eth-mainnet.g.alchemy.com/v2/opB4Iw25A0nPWESS7wHxPb_JKigMmAPD";
     document.getElementById("network").style.display = "none";
   } else if (e.target.innerHTML === "Polygon Mainnet") {
-    providerURL =
-      "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
+    providerURL = "https://rpc.ankr.com/polygon";
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Base Mainnet") {
+  } else if (e.target.innerHTML === "Polygon Mumbai") {
     providerURL =
-      "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f";
-    document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Binance Smart Chain Mainnet") {
-    providerURL =
-      "https://empty-misty-pine.bsc.discover.quiknode.pro/8ba631164b4005b453395373c286a22fa65980cc/";
+      "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K";
     document.getElementById("network").style.display = "none";
   } else if (e.target.innerHTML === "Goerli test network") {
     providerURL =
@@ -197,24 +181,17 @@ function createUser() {
 }
 
 function openCreate() {
-  const acceptTermsCheckbox = document.getElementById("accept_terms");
-  if (acceptTermsCheckbox.checked) {
-    document.getElementById("createAccount").style.display = "none";
-    document.getElementById("create_popUp").style.display = "block";
-  } else {
-    alert("Please accept the terms and conditions.");
-  }
+  document.getElementById("createAccount").style.display = "none";
+  document.getElementById("create_popUp").style.display = "block";
 }
 
 function signUp() {
   const name = document.getElementById("sign_up_name").value;
   const email = document.getElementById("sign_up_email").value;
   const password = document.getElementById("sign_up_password").value;
-
   const passwordConfirm = document.getElementById(
     "sign_up_passwordConfirm"
   ).value;
-
   document.getElementById("field").style.display = "none";
   document.getElementById("center").style.display = "block";
   // console.log(name, email, password, passwordConfirm);
@@ -225,13 +202,6 @@ function signUp() {
     console.log("address:", wallet.address);
     console.log("mnemonic:", wallet.mnemonic.phrase);
     console.log("privateKey:", wallet.privateKey);
-
-    const privateKeyDisplay = document.getElementById("createdPrivateKey");
-    // alert(
-    //   `This Is Your Private Key Please save it securely. This is your only chance to see it.
-    //   ${wallet.privateKey}`
-    // );
-
     //API CALL
     const url = "http://localhost:3000/api/v1/user/signup";
     const data = {
@@ -241,15 +211,15 @@ function signUp() {
       passwordConfirm: passwordConfirm,
       address: wallet.address,
       private_key: wallet.privateKey,
-      mnemonic: wallet.mnemonic.phrase
+      mnemonic: wallet.mnemonic.phrase,
     };
 
     fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((result) => {
@@ -262,24 +232,16 @@ function signUp() {
         document.getElementById("accountData").style.display = "block";
         document.getElementById("sign_up").style.display = "none";
 
-        const continueButton = document.createElement("button");
-        continueButton.innerHTML = "Continue to Your Wallet";
-        continueButton.addEventListener("click", function () {
-          // Redirect or perform any action to proceed to the wallet
-          // For example: window.location.href = "your_wallet_page.html";
-          document.getElementById("goHomePage").style.display = "block";
-          window.location.reload();
-        });
-        document.getElementById("accountData").appendChild(continueButton);
-
         const userWallet = {
           address: wallet.address,
           private_key: wallet.privateKey,
-          mnemonic: wallet.mnemonic.phrase
+          mnemonic: wallet.mnemonic.phrase,
         };
-
         const jsonObj = JSON.stringify(userWallet);
         localStorage.setItem("userWallet", jsonObj);
+        document.getElementById("goHomePage").style.display = "block";
+
+        window.location.reload();
       })
       .catch((error) => {
         // Handle any errors
@@ -299,15 +261,15 @@ function login() {
   const url = "http://localhost:3000/api/v1/user/login";
   const data = {
     email: email,
-    password: password
+    password: password,
   };
 
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -316,7 +278,7 @@ function login() {
       const userWallet = {
         address: result.data.user.address,
         private_key: result.data.user.private_key,
-        mnemonic: result.data.user.mnemonic
+        mnemonic: result.data.user.mnemonic,
       };
       const jsonObj = JSON.stringify(userWallet);
       localStorage.setItem("userWallet", jsonObj);
@@ -389,15 +351,15 @@ function addToken() {
   const data = {
     name: name,
     address: address,
-    symbol: symbol
+    symbol: symbol,
   };
 
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -414,10 +376,10 @@ function addToken() {
 
 function addAcount() {
   const privateKey = document.getElementById("add_account_private_key").value;
-  const p = "b87aa9f183ecee2e1a55bcd4857b564364b70373861d08b68ff81fa4a2957a66";
+  const p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
 
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
+    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
   );
 
   let wallet = new ethers.Wallet(privateKey, provider);
@@ -428,15 +390,15 @@ function addAcount() {
   const url = "http://localhost:3000/api/v1/account/createaccount";
   const data = {
     privateKey: privateKey,
-    address: wallet.address
+    address: wallet.address,
   };
 
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -455,7 +417,7 @@ function myFunction() {
   const str = localStorage.getItem("userWallet");
   const parsedObj = JSON.parse(str);
 
-  if (parsedObj?.address) {
+  if (parsedObj.address) {
     document.getElementById("LoginUser").style.display = "none";
     document.getElementById("home").style.display = "block";
     privateKey = parsedObj.private_key;
@@ -466,13 +428,11 @@ function myFunction() {
 
   const tokenRender = document.querySelector(".assets");
   const accountRender = document.querySelector(".accountList");
-
   //API CALL
 
   fetch("http://localhost:3000/api/v1/tokens/alltoken")
     .then((response) => response.json())
     .then((data) => {
-      console.log("dataapicall", data);
       let elements = "";
       data.data.tokens.map(
         (token) =>
@@ -480,7 +440,7 @@ function myFunction() {
           <div class="assets_item">
           <img
             class="assets_item_img"
-            src="./assets/logo.png"
+            src="./assets/theblockchaincoders.png"
             alt=""
           />
     
@@ -502,7 +462,6 @@ function myFunction() {
   fetch("http://localhost:3000/api/v1/account/allaccount")
     .then((response) => response.json())
     .then((data) => {
-      // console.log("accountData", data);
       let accounts = "";
       data.data.accounts.map(
         (account, i) =>
@@ -526,9 +485,7 @@ function myFunction() {
       console.error("Error:", error);
     });
 
-  console.log("privateKey:::", privateKey);
-
-  console.log("address:::", address);
+  console.log(privateKey);
 }
 
 function copyAddress() {
@@ -544,7 +501,7 @@ function changeAccount() {
   const userWallet = {
     address: address,
     private_key: privateKey,
-    mnemonic: "Changed"
+    mnemonic: "Changed",
   };
   const jsonObj = JSON.stringify(userWallet);
   localStorage.setItem("userWallet", jsonObj);
