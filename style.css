@@ -51,6 +51,7 @@ body {
 
   background-color: #ffffff;
   width: 100%;
+  height: 100%;
   right: 0;
   text-align: center;
 }
@@ -281,7 +282,7 @@ p {
 
 a {
   text-decoration: none;
-  color: rgb(0, 255, 200);
+  color: rgb(0, 0, 0);
   display: none;
 }
 
@@ -444,6 +445,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1rem;
+  cursor: pointer;
 }
 
 /* //ASSETS */
@@ -453,14 +455,15 @@ textarea {
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   grid-area: 2rem;
-  border-top: 1px solid #007838;
+  border-top: 1px solid #1a0078;
   padding: 1rem 0;
+  cursor: pointer;
 }
 
 .assets_item_img {
   width: 20px;
   height: 20px;
-  border: 1px solid #00ff75;
+  border: 1px solid #010057;
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
@@ -482,8 +485,8 @@ textarea {
   display: flex;
 }
 .copyAdressIcon {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   margin-top: 17px;
   margin-right: 5px;
 }
@@ -509,7 +512,7 @@ textarea {
 .lists {
   display: grid;
   grid-template-columns: 0.1fr 5fr;
-  border-bottom: 1px solid #01f372;
+  border-bottom: 1px solid #160268;
   align-items: center;
 }
 

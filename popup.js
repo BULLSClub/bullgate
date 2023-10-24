@@ -3,8 +3,34 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("accountList")
     .addEventListener("click", changeAccount);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   document.getElementById("userAddress").addEventListener("click", copyAddress);
   document.getElementById("transferFund").addEventListener("click", handler);
+
+
+
+
+
+
+
+
+
+
+
 
   document
     .getElementById("header_network")
@@ -14,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("network_item")
     .addEventListener("click", getSelectedNetwork);
 
-  document.getElementById("add_network").addEventListener("click", setNetwork);
 
   document.getElementById("loginAccount").addEventListener("click", loginUser);
 
@@ -41,30 +66,45 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", importGoBack);
 
   document.getElementById("open_assets").addEventListener("click", openAssets);
-
   document
     .getElementById("open_activity")
     .addEventListener("click", openActivity);
-
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
-
   document
     .getElementById("openAccountImport")
     .addEventListener("click", openImportModel);
-
   document
     .getElementById("close_import_account")
     .addEventListener("click", closeImportModel);
-
   document.getElementById("add_new_token").addEventListener("click", addToken);
-
   document
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
+  document.getElementById("terms_link").addEventListener("click", function () {
+      window.open("https://bullsclub.space/bullsclub-space/terms-conditions/", "_blank");
+  document.getElementById("terms_link1").addEventListener("click", function () {
+        window.open("https://bullsclub.space/bullsclub-space/faq/privacy-policy/", "_blank");
+      });    
+    });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let providerURL =
-  "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K";
+  "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
 
 const allToken = [
   {
@@ -79,8 +119,20 @@ const allToken = [
   },
 ];
 
+
+
 let privateKey;
 let address;
+
+
+
+
+
+
+
+
+
+
 
 function handler() {
   document.getElementById("transfer_center").style.display = "flex";
@@ -91,13 +143,19 @@ function handler() {
   p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
   a = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
+
+
+
+
+
+
+
+
   //PROVIDER
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
+    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
   );
-
   let wallet = new ethers.Wallet(privateKey, provider);
-
   const tx = {
     to: address,
     value: ethers.utils.parseEther(amount),
@@ -110,21 +168,31 @@ function handler() {
     console.log("txHash", txObj.hash);
     document.getElementById("transfer_center").style.display = "none";
     const a = document.getElementById("link");
-    a.href = `https://mumbai.polygonscan.com/tx/${txObj.hash}`;
+    a.href = `https://polygonscan.com/tx/${txObj.hash}`;
     document.getElementById("link").style.display = "block";
   });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 function checkBlance(address) {
   //PROVIDER
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
+    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
   );
   provider.getBalance(address).then((balance) => {
     const balanceInEth = ethers.utils.formatEther(balance);
-
     console.log("MATIC", balanceInEth);
-
     document.getElementById(
       "accountBlance"
     ).innerHTML = `${balanceInEth} MATIC`;
@@ -135,9 +203,47 @@ function checkBlance(address) {
   });
 }
 
+
+
+
+
+
+
+
+function checkTokenBalance(tokenAddress, userAddress) {
+  const provider = new ethers.providers.JsonRpcProvider(
+ "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh");
+  const tokenContract = new ethers.Contract(tokenAddress, ['function balanceOf(address) view returns (uint)'], provider);
+  tokenContract.balanceOf(userAddress).then((balance) => {
+  console.log("Token Balance", ethers.utils.formatUnits(balance, 18)); 
+  document.getElementById("tokenBalance").innerHTML = `${ethers.utils.formatUnits(balance, 18)} Tokens`; });
+  document.getElementById("userAddress").innerHTML = `${userAddress.slice(0, 15)}..`;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function getOpenNetwork() {
   document.getElementById("network").style.display = "block";
 }
+
+
+
+
+
+
+
 
 function getSelectedNetwork(e) {
   const element = document.getElementById("selected_network");
@@ -145,30 +251,78 @@ function getSelectedNetwork(e) {
 
   if (e.target.innerHTML === "Ethereum Mainnet") {
     providerURL =
-      "https://eth-mainnet.g.alchemy.com/v2/opB4Iw25A0nPWESS7wHxPb_JKigMmAPD";
-    document.getElementById("network").style.display = "none";
+      "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW";
+      scanURL = "https://etherscan.io/";
+      document.getElementById("network").style.display = "none";
+    
+
+    
   } else if (e.target.innerHTML === "Polygon Mainnet") {
     providerURL = "https://rpc.ankr.com/polygon";
+    scanURL = "https://polygonscan.com/";
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Polygon Mumbai") {
-    providerURL =
-      "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K";
+    
+
+  } else if (e.target.innerHTML === "Binance Smart Chain") {
+    providerURL = "https://empty-misty-pine.bsc.discover.quiknode.pro/8ba631164b4005b453395373c286a22fa65980cc/";
+      scanURL = "https://bscscan.com/";
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Goerli test network") {
-    providerURL =
-      "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp";
-    document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Sepolia test network") {
-    providerURL = "https://rpc.ankr.com/eth_sepolia";
+
+  } else if (e.target.innerHTML === "BASE Mainnet") {
+    providerURL = "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f";
+    scanURL = "https://basescan.org/";
     document.getElementById("network").style.display = "none";
   }
+  else if (e.target.innerHTML === "Goerli test network") {
+    providerURL =
+      "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp";
+      scanURL = "https://goerli.etherscan.io/";
+    document.getElementById("network").style.display = "none";
+  } 
 
   console.log(providerURL);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function setNetwork() {
   document.getElementById("network").style.display = "none";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function loginUser() {
   document.getElementById("createAccount").style.display = "none";
@@ -250,6 +404,10 @@ function signUp() {
     //END OF API CALL
   }
 }
+
+
+
+
 
 function login() {
   document.getElementById("login_form").style.display = "none";
@@ -379,7 +537,7 @@ function addAcount() {
   const p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
 
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mumbai.g.alchemy.com/v2/0awa485pp03Dww2fTjrSCg7yHlZECw-K"
+    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
   );
 
   let wallet = new ethers.Wallet(privateKey, provider);
