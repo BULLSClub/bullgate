@@ -4,33 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("accountList")
     .addEventListener("click", changeAccount);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   document.getElementById("userAddress").addEventListener("click", copyAddress);
   document.getElementById("transferFund").addEventListener("click", handler);
-
-
-
-
-
-
-
-
-
-
-
 
   document
     .getElementById("header_network")
@@ -40,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("network_item")
     .addEventListener("click", getSelectedNetwork);
 
-
   document.getElementById("loginAccount").addEventListener("click", loginUser);
 
   document
@@ -48,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", createUser);
 
   document.getElementById("openCreate").addEventListener("click", openCreate);
-
   document.getElementById("sign_up").addEventListener("click", signUp);
   document.getElementById("login_up").addEventListener("click", login);
   document.getElementById("logout").addEventListener("click", logout);
@@ -89,89 +62,168 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+let providerURL; 
+let scanURL;
 
+const networkProviders = {
+  "Ethereum Mainnet": "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW",
+  "Polygon Mainnet": "https://rpc.ankr.com/polygon",
+  "Binance Smart Chain": "https://empty-misty-pine.bsc.discover.quiknode.pro/8ba631164b4005b453395373c286a22fa65980cc/",
+  "BASE Mainnet": "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f",
+  "Goerli test network": "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp",
+};
 
+const networkTokens = {
+  "Ethereum Mainnet": [
+    {
+      name: "ETHER",
+      address: "0x0000000000000000000000000000000000000000",
+      symbol: "ETH",
+    },
+  ],
+  "Polygon Mainnet": [
+    {
+      name: "MATIC",
+      address: "0x0000000000000000000000000000000000001010",
+      symbol: "MATIC",
+    },
+    {
+      name: "BULLSCLUB",
+      address: "0x489F35233247C4fA43B81ed09532673e7b801c39",
+      symbol: "BULLSC",
+    },
+  ],
+  "Binance Smart Chain": [
+    {
+      name: "BNB",
+      address: "0x0000000000000000000000000000000000000000",
+      symbol: "BNB",
+    },
+    {
+      name: "BULLSCLUB",
+      address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7",
+      symbol: "BULLS",
+    },
+  ],
+  "BASE Mainnet": [
+    {
+      name: "ETHER",
+      address: "0x4200000000000000000000000000000000000006",
+      symbol: "ETH",
+    },
+    {
+      name: "BULLS",
+      address: "0x1D81EC956fb906Ad4c863a68cCCB3831550963c1",
+      symbol: "BULLS",
+    },
+  ],
+  "Goerli test network": [
+    {
+      name: "ETHER",
+      address: "0xdD69DB25F6D620A7baD3023c5d32761D353D3De9",
+      symbol: "ETH",
+    },
+  ],
+};
 
+function getOpenNetwork() {
+  document.getElementById("network").style.display = "block";
+}
 
-
-
-
-
-
-
-
-
-
-
-let providerURL =
-  "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
-
-const allToken = [
-  {
-    name: "MATIC",
-    address: "0x0000000000000000000000000000000000001010",
-    symbol: "MATIC",
-  },
-  {
-    name: "BULLSCLUB",
-    address: "0xb309098bcB51E5C687a16FA41bD6055f47c9eBb0",
-    symbol: "BULLS",
-  },
-];
-
-
-
-let privateKey;
-let address;
-
-
-
-
-
-
-
-
-
-
+function getSelectedNetwork(e) {
+  const element = document.getElementById("selected_network");
+  element.innerHTML = e.target.innerHTML;
+  providerURL = networkProviders[e.target.innerHTML];
+  scanURL = getScanURL(e.target.innerHTML);
+  document.getElementById("network").style.display = "none";
+  console.log(providerURL);
+}
+function getScanURL(network) {
+  switch (network) {
+    case "Ethereum Mainnet":
+      return "https://etherscan.io/";
+    case "Polygon Mainnet":
+      return "https://polygonscan.com/";
+    case "Binance Smart Chain":
+      return "https://bscscan.com/";
+    case "BASE Mainnet":
+      return "https://basescan.org/";
+    case "Goerli test network":
+      return "https://goerli.etherscan.io/";
+    default:
+      return "";
+  }
+}
+function setNetwork() {
+  document.getElementById("network").style.display = "none";
+}
 
 function handler() {
   document.getElementById("transfer_center").style.display = "flex";
-
   const amount = document.getElementById("amount").value;
   const address = document.getElementById("address").value;
+  
+  // Get the selected network
+  const selectedNetwork = getSelectedNetwork();
+  
+  // Define the provider URL based on the selected network
+  const providerURL = networkProviders[selectedNetwork];
 
-  p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
-  a = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+  // Use the selected provider
+  const provider = new ethers.providers.JsonRpcProvider(providerURL);
 
-
-
-
-
-
-
-
-
-  //PROVIDER
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
-  );
-  let wallet = new ethers.Wallet(privateKey, provider);
+  const privateKey = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
+  const userAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+  
+  const wallet = new ethers.Wallet(privateKey, provider);
   const tx = {
     to: address,
     value: ethers.utils.parseEther(amount),
   };
 
   var a = document.getElementById("link");
-  a.href = "somelink url";
+  const scanURL = getScanURL(selectedNetwork);
+  a.href = scanURL !== "" ? `${scanURL}tx/${txObj.hash}` : "";
 
   wallet.sendTransaction(tx).then((txObj) => {
     console.log("txHash", txObj.hash);
     document.getElementById("transfer_center").style.display = "none";
-    const a = document.getElementById("link");
-    a.href = `https://polygonscan.com/tx/${txObj.hash}`;
     document.getElementById("link").style.display = "block";
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -202,14 +254,6 @@ function checkBlance(address) {
     )}..`;
   });
 }
-
-
-
-
-
-
-
-
 function checkTokenBalance(tokenAddress, userAddress) {
   const provider = new ethers.providers.JsonRpcProvider(
  "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh");
@@ -227,81 +271,6 @@ function checkTokenBalance(tokenAddress, userAddress) {
 
 
 
-
-
-
-
-
-
-
-function getOpenNetwork() {
-  document.getElementById("network").style.display = "block";
-}
-
-
-
-
-
-
-
-
-function getSelectedNetwork(e) {
-  const element = document.getElementById("selected_network");
-  element.innerHTML = e.target.innerHTML;
-
-  if (e.target.innerHTML === "Ethereum Mainnet") {
-    providerURL =
-      "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW";
-      scanURL = "https://etherscan.io/";
-      document.getElementById("network").style.display = "none";
-    
-
-    
-  } else if (e.target.innerHTML === "Polygon Mainnet") {
-    providerURL = "https://rpc.ankr.com/polygon";
-    scanURL = "https://polygonscan.com/";
-    document.getElementById("network").style.display = "none";
-    
-
-  } else if (e.target.innerHTML === "Binance Smart Chain") {
-    providerURL = "https://empty-misty-pine.bsc.discover.quiknode.pro/8ba631164b4005b453395373c286a22fa65980cc/";
-      scanURL = "https://bscscan.com/";
-    document.getElementById("network").style.display = "none";
-
-  } else if (e.target.innerHTML === "BASE Mainnet") {
-    providerURL = "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f";
-    scanURL = "https://basescan.org/";
-    document.getElementById("network").style.display = "none";
-  }
-  else if (e.target.innerHTML === "Goerli test network") {
-    providerURL =
-      "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp";
-      scanURL = "https://goerli.etherscan.io/";
-    document.getElementById("network").style.display = "none";
-  } 
-
-  console.log(providerURL);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function setNetwork() {
-  document.getElementById("network").style.display = "none";
-}
 
 
 
@@ -338,6 +307,19 @@ function openCreate() {
   document.getElementById("createAccount").style.display = "none";
   document.getElementById("create_popUp").style.display = "block";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function signUp() {
   const name = document.getElementById("sign_up_name").value;
@@ -409,6 +391,21 @@ function signUp() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function login() {
   document.getElementById("login_form").style.display = "none";
   document.getElementById("center").style.display = "block";
@@ -449,10 +446,27 @@ function login() {
   //END OF API CALL
 }
 
+
+
+
+
+
 function logout() {
   localStorage.removeItem("userWallet");
   window.location.reload();
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 function openTransfer() {
   document.getElementById("transfer_form").style.display = "block";
@@ -499,6 +513,14 @@ function closeImportModel() {
   document.getElementById("home").style.display = "block";
 }
 
+
+
+
+
+
+
+
+
 function addToken() {
   const address = document.getElementById("token_address").value;
   const name = document.getElementById("token_name").value;
@@ -532,17 +554,22 @@ function addToken() {
   //END OF API CALL
 }
 
+
+
+
+
+
 function addAcount() {
   const privateKey = document.getElementById("add_account_private_key").value;
   const p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
-
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
   );
 
-  let wallet = new ethers.Wallet(privateKey, provider);
 
+  let wallet = new ethers.Wallet(privateKey, provider);
   console.log(wallet.address);
+
 
   //API CALL
   const url = "http://localhost:3000/api/v1/account/createaccount";
@@ -570,6 +597,19 @@ function addAcount() {
     });
   //END OF API CALL
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function myFunction() {
   const str = localStorage.getItem("userWallet");
@@ -646,9 +686,19 @@ function myFunction() {
   console.log(privateKey);
 }
 
+
+
+
+
+
+
 function copyAddress() {
   navigator.clipboard.writeText(address);
 }
+
+
+
+
 
 function changeAccount() {
   const data = document.querySelector(".accountValue");
