@@ -1,125 +1,124 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("accountList")
-    .addEventListener("click", changeAccount);
+  document.getElementById("accountList").addEventListener("click", changeAccount);
   document.getElementById("userAddress").addEventListener("click", copyAddress);
-  document.getElementById("transferFund").addEventListener("click", handler);
-
-  document.getElementById("header_network").addEventListener("click", getOpenNetwork);
-  document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
-
   document.getElementById("loginAccount").addEventListener("click", loginUser);
-
-  document
-    .getElementById("accountCreate")
-    .addEventListener("click", createUser);
-
-  document.getElementById("openCreate").addEventListener("click", openCreate);
   document.getElementById("sign_up").addEventListener("click", signUp);
   document.getElementById("login_up").addEventListener("click", login);
   document.getElementById("logout").addEventListener("click", logout);
-
-  document
-    .getElementById("open_Transfer")
-    .addEventListener("click", openTransfer);
-
+  document.getElementById("openCreate").addEventListener("click", openCreate);
+  document.getElementById("accountCreate").addEventListener("click", createUser);
+  document.getElementById("open_Buy").addEventListener("click", function () {
+    window.open("https://simpleswap.io/?ref=9ecd01582250", "_blank");
+    });    
+    document.getElementById("open_nft").addEventListener("click", openNFT);
+  document.getElementById("header_network").addEventListener("click", getOpenNetwork);
+  document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
+  document.getElementById("transferFund").addEventListener("click", handler);
+  document.getElementById("open_Transfer").addEventListener("click", openTransfer);
   document.getElementById("goBack").addEventListener("click", goBack);
   document.getElementById("open_Import").addEventListener("click", openImport);
-
-  document
-    .getElementById("goBack_import")
-    .addEventListener("click", importGoBack);
-
-  document.getElementById("open_assets").addEventListener("click", openAssets);
-
-  document
-    .getElementById("open_activity")
-    .addEventListener("click", openActivity);
-
+  document.getElementById("goBack_import").addEventListener("click", importGoBack);
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
-
-  document
-    .getElementById("openAccountImport")
-    .addEventListener("click", openImportModel);
-
-  document
-    .getElementById("close_import_account")
-    .addEventListener("click", closeImportModel);
-
+  document.getElementById("openAccountImport").addEventListener("click", openImportModel);
+  document.getElementById("close_import_account").addEventListener("click", closeImportModel);
   document.getElementById("add_new_token").addEventListener("click", addToken);
-  document
-    .getElementById("add_New_Account")
-    .addEventListener("click", addAccount);
+  document.getElementById("add_New_Account").addEventListener("click", addAccount);
+  document.getElementById("terms_link").addEventListener("click", function () {
+    window.open("https://bullsclub.space/bullsclub-space/terms-conditions/", "_blank");
+    document.getElementById("terms_link1").addEventListener("click", function () {
+      window.open("https://bullsclub.space/bullsclub-space/faq/privacy-policy/", "_blank");
+    });  
+  }); 
 });
+
+
+
 
 let selectedNetwork = "Polygon Mainnet";
 
+
 const networkSettings = {
   "Ethereum Mainnet": {
-    providerURL: "https://eth-mainnet.g.alchemy.com/v2/lK3gJ...",
+    providerURL: "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW",
     scanURL: "https://etherscan.io/",
   },
   "Polygon Mainnet": {
-    providerURL: "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5...",
+    providerURL: "https://rpc.ankr.com/polygon",
     scanURL: "https://polygonscan.com/",
   },
   "Binance Smart Chain": {
     providerURL: "https://bsc-dataseed.binance.org/",
     scanURL: "https://bscscan.com/",
   },
-  // Define settings for other networks here
+  "BASE Mainnet": {
+    providerURL: "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f",
+    scanURL: "https://basescan.org/",
+  },
+  "Goerli test network": {
+    providerURL: "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp",
+    scanURL: "https://goerli.etherscan.io/",
+  },
 };
+
+
 
 const allTokens = {
   "Ethereum Mainnet": [
-    // Tokens for Ethereum Mainnet
+    {
+      name: "ETHER",
+      address: "0x0000000000000000000000000000000000000000",
+      symbol: "ETH",
+    },
   ],
   "Polygon Mainnet": [
-    // Tokens for Polygon Mainnet
+    {
+      name: "MATIC",
+      address: "0x0000000000000000000000000000000000001010",
+      symbol: "MATIC",
+    },
+    {
+      name: "BULLSCLUB",
+      address: "0x489F35233247C4fA43B81ed09532673e7b801c39",
+      symbol: "BULLSC",
+    },
   ],
   "Binance Smart Chain": [
-    // Tokens for Binance Smart Chain
+    {
+      name: "BNB",
+      address: "0x0000000000000000000000000000000000000000",
+      symbol: "BNB",
+    },
+    {
+      name: "BULLSCLUB",
+      address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7",
+      symbol: "BULLS",
+    },
   ],
-  // Define tokens for other networks here
+  "BASE Mainnet": [
+    {
+      name: "ETHER",
+      address: "0x4200000000000000000000000000000000000006",
+      symbol: "ETH",
+    },
+    {
+      name: "BULLS",
+      address: "0x1D81EC956fb906Ad4c863a68cCCB3831550963c1",
+      symbol: "BULLS",
+    },
+  ],
+  "Goerli test network": [
+    {
+      name: "ETHER",
+      address: "0xdD69DB25F6D620A7baD3023c5d32761D353D3De9",
+      symbol: "ETH",
+    },
+  ],
 };
+
 
 let privateKey;
 let address;
 
-function handler() {
-  document.getElementById("transfer_center").style.display = "flex";
-  const amount = document.getElementById("amount").value;
-  const recipient = document.getElementById("address").value;
-
-  const provider = new ethers.providers.JsonRpcProvider(networkSettings[selectedNetwork].providerURL);
-  const wallet = new ethers.Wallet(privateKey, provider);
-
-  const tx = {
-    to: recipient,
-    value: ethers.utils.parseEther(amount),
-  };
-
-  var a = document.getElementById("link");
-  a.href = "somelink url";
-
-  wallet.sendTransaction(tx).then((txObj) => {
-    console.log("txHash", txObj.hash);
-    document.getElementById("transfer_center").style.display = "none";
-    const a = document.getElementById("link");
-    a.href = `${networkSettings[selectedNetwork].scanURL}/tx/${txObj.hash}`;
-    document.getElementById("link").style.display = "block";
-  });
-}
-
-function checkBalance(address) {
-  const provider = new ethers.providers.JsonRpcProvider(networkSettings[selectedNetwork].providerURL);
-  provider.getBalance(address).then((balance) => {
-    const balanceInEth = ethers.utils.formatEther(balance);
-    console.log(selectedNetwork, balanceInEth);
-    document.getElementById("accountBalance").innerHTML = `${balanceInEth} MATIC`;
-    document.getElementById("userAddress").innerHTML = `${address.slice(0, 15)}..`;
-  });
-}
 
 function getOpenNetwork() {
   document.getElementById("network").style.display = "block";
@@ -132,10 +131,33 @@ function getSelectedNetwork(e) {
   console.log(selectedNetwork);
   document.getElementById("network").style.display = "none";
 }
-
+function getScanURL(network) {
+  switch (network) {
+    case "Ethereum Mainnet":
+      return "https://etherscan.io/";
+    case "Polygon Mainnet":
+      return "https://polygonscan.com/";
+    case "Binance Smart Chain":
+      return "https://bscscan.com/";
+    case "BASE Mainnet":
+      return "https://basescan.org/";
+    case "Goerli test network":
+      return "https://goerli.etherscan.io/";
+    default:
+      return "";
+  }
+}
 function setNetwork() {
   document.getElementById("network").style.display = "none";
 }
+
+
+
+
+
+
+
+
 
 function loginUser() {
   document.getElementById("createAccount").style.display = "none";
@@ -212,6 +234,12 @@ function signUp() {
   }
 }
 
+
+
+
+
+
+
 function login() {
   document.getElementById("login_form").style
 }
@@ -219,14 +247,6 @@ function login() {
   
   
   
-  
-  
-  
-  
-  
-  
-  let providerURL =
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh";
   
   
   
@@ -245,22 +265,6 @@ function login() {
   
   
   
-  
-  
-  
-  
-    const allToken = [
-        {
-          name: "MATIC",
-          address: "0x0000000000000000000000000000000000001010",
-          symbol: "MATIC",
-        },
-        {
-          name: "BULLSCLUB",
-          address: "0x489F35233247C4fA43B81ed09532673e7b801c39",
-          symbol: "BULLSC",
-        },
-      ];
   
   
   
@@ -297,9 +301,6 @@ function login() {
     p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
     a = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
   
-
-
-    
     //PROVIDER
     const provider = new ethers.providers.JsonRpcProvider(
       "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
@@ -318,7 +319,17 @@ function login() {
       a.href = `https://polygonscan.com/tx/${txObj.hash}`;
       document.getElementById("link").style.display = "block";
     });
+  
+
+    wallet.sendTransaction(tx).then((txObj) => {
+      console.log("txHash", txObj.hash);
+      document.getElementById("transfer_center").style.display = "none";
+      const a = document.getElementById("link");
+      a.href = `${networkSettings[selectedNetwork].scanURL}/tx/${txObj.hash}`;
+      document.getElementById("link").style.display = "block";
+    });
   }
+  
   
   
   
@@ -601,15 +612,30 @@ function login() {
     document.getElementById("home").style.display = "block";
   }
   
+
+  function openNFT() {
+    document.getElementById("nft_form").style.display = "block";
+    document.getElementById("home").style.display = "none";
+  }
+
+
+
   function openActivity() {
     document.getElementById("activity").style.display = "block";
     document.getElementById("assets").style.display = "none";
   }
   
+
+
+
   function openAssets() {
     document.getElementById("activity").style.display = "none";
     document.getElementById("assets").style.display = "block";
   }
+
+
+
+
   
   function goHomePage() {
     document.getElementById("create_popUp").style.display = "none";

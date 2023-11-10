@@ -1,69 +1,96 @@
 // Pure JS:
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("accountList")
-    .addEventListener("click", changeAccount);
-
+  document.getElementById("accountList") .addEventListener("click", changeAccount);
   document.getElementById("userAddress").addEventListener("click", copyAddress);
-  document.getElementById("transferFund").addEventListener("click", handler);
-
-  document
-    .getElementById("header_network")
-    .addEventListener("click", getOpenNetwork);
-
-  document
-    .getElementById("network_item")
-    .addEventListener("click", getSelectedNetwork);
-
   document.getElementById("loginAccount").addEventListener("click", loginUser);
-
-  document
-    .getElementById("accountCreate")
-    .addEventListener("click", createUser);
-
+  document.getElementById("accountCreate").addEventListener("click", createUser);
   document.getElementById("openCreate").addEventListener("click", openCreate);
   document.getElementById("sign_up").addEventListener("click", signUp);
   document.getElementById("login_up").addEventListener("click", login);
   document.getElementById("logout").addEventListener("click", logout);
 
-  document
-    .getElementById("open_Transfer")
-    .addEventListener("click", openTransfer);
+
+  document.getElementById("header_network").addEventListener("click", getOpenNetwork);
+  document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
+  
+   
+
+
+
+  document.getElementById("open_Buy").addEventListener("click", function () {
+    window.open("https://simpleswap.io/?ref=9ecd01582250", "_blank");
+    });    
+  document .getElementById("open_Transfer").addEventListener("click", openTransfer);
+  document.getElementById("transferFund").addEventListener("click", handler);
 
   document.getElementById("goBack").addEventListener("click", goBack);
-
   document.getElementById("open_Import").addEventListener("click", openImport);
-
-  document
-    .getElementById("goBack_import")
-    .addEventListener("click", importGoBack);
-
+  document.getElementById("goBack_import").addEventListener("click", importGoBack);
   document.getElementById("open_assets").addEventListener("click", openAssets);
-  document
-    .getElementById("open_activity")
-    .addEventListener("click", openActivity);
+  document.getElementById("open_activity").addEventListener("click", openActivity);
+  
+
+
+
+  document.getElementById("open_nft").addEventListener("click", openNFT);
+
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
-  document
-    .getElementById("openAccountImport")
-    .addEventListener("click", openImportModel);
-  document
-    .getElementById("close_import_account")
-    .addEventListener("click", closeImportModel);
+  
+
+  document.getElementById("openAccountImport") .addEventListener("click", openImportModel);
+  document.getElementById("close_import_account") .addEventListener("click", closeImportModel);
   document.getElementById("add_new_token").addEventListener("click", addToken);
-  document
-    .getElementById("add_New_Account")
-    .addEventListener("click", addAcount);
+  document.getElementById("add_New_Account").addEventListener("click", addAcount);
   document.getElementById("terms_link").addEventListener("click", function () {
       window.open("https://bullsclub.space/bullsclub-space/terms-conditions/", "_blank");
-  document.getElementById("terms_link1").addEventListener("click", function () {
+  
+      document.getElementById("terms_link1").addEventListener("click", function () {
         window.open("https://bullsclub.space/bullsclub-space/faq/privacy-policy/", "_blank");
       });    
     });
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let providerURL; 
 let scanURL;
+
+
+
+
+
+
+
+
+
+
+
+
 
 const networkProviders = {
   "Ethereum Mainnet": "https://eth-mainnet.g.alchemy.com/v2/lK3gJiALB1kZ6wrtLsFip0wtQLgdP7qW",
@@ -72,7 +99,6 @@ const networkProviders = {
   "BASE Mainnet": "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f",
   "Goerli test network": "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp",
 };
-
 const networkTokens = {
   "Ethereum Mainnet": [
     {
@@ -126,9 +152,14 @@ const networkTokens = {
   ],
 };
 
+
+
+
 function getOpenNetwork() {
   document.getElementById("network").style.display = "block";
 }
+
+
 
 function getSelectedNetwork(e) {
   const element = document.getElementById("selected_network");
@@ -158,23 +189,32 @@ function setNetwork() {
   document.getElementById("network").style.display = "none";
 }
 
+
+
+
+
+
+
+
+
+
 function handler() {
   document.getElementById("transfer_center").style.display = "flex";
+
   const amount = document.getElementById("amount").value;
   const address = document.getElementById("address").value;
-  
+
   // Get the selected network
   const selectedNetwork = getSelectedNetwork();
-  
-  // Define the provider URL based on the selected network
   const providerURL = networkProviders[selectedNetwork];
-
   // Use the selected provider
   const provider = new ethers.providers.JsonRpcProvider(providerURL);
 
+
+
   const privateKey = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
   const userAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-  
+
   const wallet = new ethers.Wallet(privateKey, provider);
   const tx = {
     to: address,
@@ -185,6 +225,7 @@ function handler() {
   const scanURL = getScanURL(selectedNetwork);
   a.href = scanURL !== "" ? `${scanURL}tx/${txObj.hash}` : "";
 
+  
   wallet.sendTransaction(tx).then((txObj) => {
     console.log("txHash", txObj.hash);
     document.getElementById("transfer_center").style.display = "none";
@@ -206,38 +247,8 @@ function handler() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function checkBlance(address) {
+  
   //PROVIDER
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
@@ -468,6 +479,8 @@ function logout() {
 
 
 
+
+
 function openTransfer() {
   document.getElementById("transfer_form").style.display = "block";
   document.getElementById("home").style.display = "none";
@@ -478,6 +491,8 @@ function goBack() {
   document.getElementById("home").style.display = "block";
 }
 
+
+
 function openImport() {
   document.getElementById("import_token").style.display = "block";
   document.getElementById("home").style.display = "none";
@@ -487,6 +502,12 @@ function importGoBack() {
   document.getElementById("import_token").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
+
+function openNFT() {
+  document.getElementById("nft_form").style.display = "block";
+  document.getElementById("home").style.display = "none";
+}
+
 
 function openActivity() {
   document.getElementById("activity").style.display = "block";
@@ -525,7 +546,6 @@ function addToken() {
   const address = document.getElementById("token_address").value;
   const name = document.getElementById("token_name").value;
   const symbol = document.getElementById("token_symbol").value;
-
   //API CALL
   const url = "http://localhost:3000/api/v1/tokens/createtoken";
   const data = {
@@ -533,7 +553,6 @@ function addToken() {
     address: address,
     symbol: symbol,
   };
-
   fetch(url, {
     method: "POST",
     headers: {
