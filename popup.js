@@ -23,33 +23,65 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("open_Buy").addEventListener("click", function () {
     window.open("https://simpleswap.io/?ref=9ecd01582250", "_blank");
   });
+
+
+
+
+
   document
     .getElementById("open_Transfer")
     .addEventListener("click", openTransfer);
   document.getElementById("transferFund").addEventListener("click", handler);
+
+
+
+
 
   document.getElementById("goBack").addEventListener("click", goBack);
   document.getElementById("open_Import").addEventListener("click", openImport);
   document
     .getElementById("goBack_import")
     .addEventListener("click", importGoBack);
+
+
+
   document.getElementById("open_assets").addEventListener("click", openAssets);
   document
     .getElementById("open_activity")
     .addEventListener("click", openActivity);
 
+
+
+
+
+
   document.getElementById("open_nft").addEventListener("click", openNFT);
 
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
+
+
+
+
+
 
   document
     .getElementById("openAccountImport")
     .addEventListener("click", openImportModel);
   document.getElementById("close_").addEventListener("click", closeImportModel);
+  
+  
+  
+  
   document.getElementById("add_new_token").addEventListener("click", addToken);
   document
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
+
+
+
+
+
+
   document.getElementById("terms_link").addEventListener("click", function () {
     window.open(
       "https://bullsclub.space/bullsclub-space/terms-conditions/",
@@ -67,8 +99,20 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
+
+
+
+
+
+
+
 let providerURL;
 let scanURL;
+
+
+
+
 
 const networkProviders = {
   "Ethereum Mainnet":
@@ -123,6 +167,11 @@ const networkTokens = {
       name: "BULLS",
       address: "0x1D81EC956fb906Ad4c863a68cCCB3831550963c1",
       symbol: "BULLS"
+    },
+    {
+      name: "BEARS-BULLS",
+      address: " 0xC6c078038ecF7f3D82b1A9002B0f9f1bBd05e15D",
+      symbol: "BEARS"
     }
   ],
   "Goerli test network": [
@@ -134,9 +183,15 @@ const networkTokens = {
   ]
 };
 
+
+
+
 function getOpenNetwork() {
   document.getElementById("network").style.display = "block";
 }
+
+
+
 
 function getSelectedNetwork(e) {
   const str = localStorage.getItem("userWallet");
@@ -144,7 +199,9 @@ function getSelectedNetwork(e) {
   const element = document.getElementById("selected_network");
   element.innerHTML = e.target.innerHTML;
   providerURL = networkProviders[e.target.innerHTML];
+  
   scanURL = getScanURL(e.target.innerHTML);
+
   document.getElementById("network").style.display = "none";
 
   const tokens = networkTokens[e.target.innerHTML];
@@ -161,6 +218,10 @@ function getSelectedNetwork(e) {
   console.log("providerURL", providerURL);
   // checkBalance(address, providerURL, networkSymbol);
 }
+
+
+
+
 
 function getScanURL(network) {
   switch (network) {
@@ -182,6 +243,13 @@ function setNetwork() {
   document.getElementById("network").style.display = "none";
 }
 
+
+
+
+
+
+
+
 function handler() {
   document.getElementById("transfer_center").style.display = "flex";
 
@@ -194,9 +262,22 @@ function handler() {
   // Use the selected provider
   const provider = new ethers.providers.JsonRpcProvider(providerURL);
 
+
+
+
+
+
+
   const privateKey =
     "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
   const userAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+
+
+
+
+
+
+
 
   const wallet = new ethers.Wallet(privateKey, provider);
   const tx = {
@@ -215,6 +296,12 @@ function handler() {
   });
 }
 
+
+
+
+
+
+
 function checkBalance(address, providerURL, networkSymbol) {
   const provider = new ethers.providers.JsonRpcProvider(providerURL);
 
@@ -230,6 +317,16 @@ function checkBalance(address, providerURL, networkSymbol) {
     )}..`;
   });
 }
+
+
+
+
+
+
+
+
+
+
 
 function checkTokenBalance(tokenAddress, userAddress) {
   const provider = new ethers.providers.JsonRpcProvider(
@@ -251,6 +348,20 @@ function checkTokenBalance(tokenAddress, userAddress) {
     15
   )}..`;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function loginUser() {
   document.getElementById("createAccount").style.display = "none";
@@ -303,6 +414,11 @@ function signUp() {
       },
       body: JSON.stringify(data)
     })
+
+
+
+
+
       .then((response) => response.json())
       .then((result) => {
         document.getElementById("createdAddress").innerHTML = wallet.address;
@@ -314,11 +430,20 @@ function signUp() {
         document.getElementById("accountData").style.display = "block";
         document.getElementById("sign_up").style.display = "none";
 
+
+
+
+
+
+
         const userWallet = {
           address: wallet.address,
           private_key: wallet.privateKey,
           mnemonic: wallet.mnemonic.phrase
         };
+
+
+
         const jsonObj = JSON.stringify(userWallet);
         localStorage.setItem("userWallet", jsonObj);
         document.getElementById("goHomePage").style.display = "block";
@@ -332,6 +457,11 @@ function signUp() {
     //END OF API CALL
   }
 }
+
+
+
+
+
 
 function login() {
   document.getElementById("login_form").style.display = "none";
@@ -378,10 +508,19 @@ function logout() {
   window.location.reload();
 }
 
+
+
+
 function openTransfer() {
   document.getElementById("transfer_form").style.display = "block";
   document.getElementById("home").style.display = "none";
 }
+
+
+
+
+
+
 
 function goBack() {
   document.getElementById("transfer_form").style.display = "none";
@@ -393,15 +532,28 @@ function openImport() {
   document.getElementById("home").style.display = "none";
 }
 
+
+
+
+
 function importGoBack() {
   document.getElementById("import_token").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
 
+
+
+
+
 function openNFT() {
   document.getElementById("nft_form").style.display = "block";
   document.getElementById("home").style.display = "none";
 }
+
+
+
+
+
 
 function openActivity() {
   document.getElementById("activity").style.display = "block";
@@ -413,20 +565,42 @@ function openAssets() {
   document.getElementById("assets").style.display = "block";
 }
 
+
+
+
+
+
+
 function goHomePage() {
   document.getElementById("create_popUp").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
+
+
+
+
 
 function openImportModel() {
   document.getElementById("").style.display = "block";
   document.getElementById("home").style.display = "none";
 }
 
+
+
+
+
 function closeImportModel() {
   document.getElementById("import_account").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
+
+
+
+
+
+
+
+
 
 function addToken() {
   const address = document.getElementById("token_address").value;
@@ -458,6 +632,20 @@ function addToken() {
     });
   //END OF API CALL
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function addAcount() {
   const privateKey = document.getElementById("add_account_private_key").value;
@@ -496,6 +684,15 @@ function addAcount() {
   //END OF API CALL
 }
 
+
+
+
+
+
+
+
+
+
 function myFunction() {
   const str = localStorage.getItem("userWallet");
   const parsedObj = JSON.parse(str);
@@ -505,6 +702,14 @@ function myFunction() {
     document.getElementById("home").style.display = "block";
     privateKey = parsedObj.private_key;
     address = parsedObj.address;
+
+
+
+
+
+
+
+
     const element = document.getElementById("selected_network");
     // element.innerHTML = e.target.innerHTML;
     const selectedNetwork = element.innerHTML;
@@ -518,14 +723,25 @@ function myFunction() {
     // const networkName = tokenInfo ? tokenInfo.name : "";
     // const networkAdress = tokenInfo ? tokenInfo.address : "";
 
+
+
+
+
+
+
     checkBalance(parsedObj.address, providerURL, networkSymbol);
     const balance = checkBalance(parsedObj.address, providerURL, networkSymbol);
     console.log("i am here ", providerURL);
   }
 
+
+
+
   const tokenRender = document.querySelector(".assets");
   const accountRender = document.querySelector(".accountList");
   //API CALL
+
+
 
   fetch("http://localhost:3000/api/v1/tokens/alltoken")
     .then((response) => response.json())
@@ -554,6 +770,12 @@ function myFunction() {
       // Handle any errors
       console.error("Error:", error);
     });
+
+
+
+
+
+
 
   //END API CALL
   fetch("http://localhost:3000/api/v1/account/allaccount")
@@ -589,6 +811,11 @@ function copyAddress() {
   navigator.clipboard.writeText(address);
 }
 
+
+
+
+
+
 function changeAccount() {
   const data = document.querySelector(".accountValue");
   const address = data.getAttribute("data-address");
@@ -604,5 +831,10 @@ function changeAccount() {
   localStorage.setItem("userWallet", jsonObj);
   window.location.reload();
 }
+
+
+
+
+
 
 window.onload = myFunction;
