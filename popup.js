@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("open_Buy").addEventListener("click", function () {
     window.open("https://simpleswap.io/?ref=9ecd01582250", "_blank");
   });
+
   document
     .getElementById("open_Transfer")
     .addEventListener("click", openTransfer);
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("goBack_import")
     .addEventListener("click", importGoBack);
+
   document.getElementById("open_assets").addEventListener("click", openAssets);
   document
     .getElementById("open_activity")
@@ -52,6 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
+  document
+    .getElementById("Go_Back_To_Original_Account")
+    .addEventListener("click", revertToOriginalAccount);
+
   document.getElementById("terms_link").addEventListener("click", function () {
     window.open(
       "https://bullsclub.space/bullsclub-space/terms-conditions/",
@@ -71,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let providerURL;
 let scanURL;
+let originalAccount = {};
 
 const networkProviders = {
   "Ethereum Mainnet":
@@ -125,6 +132,11 @@ const networkTokens = {
       name: "BULLS",
       address: "0x1D81EC956fb906Ad4c863a68cCCB3831550963c1",
       symbol: "BULLS"
+    },
+    {
+      name: "BEARS-BULLS",
+      address: " 0xC6c078038ecF7f3D82b1A9002B0f9f1bBd05e15D",
+      symbol: "BEARS"
     }
   ],
   "Goerli test network": [
@@ -146,7 +158,9 @@ function getSelectedNetwork(e) {
   const element = document.getElementById("selected_network");
   element.innerHTML = e.target.innerHTML;
   providerURL = networkProviders[e.target.innerHTML];
+
   scanURL = getScanURL(e.target.innerHTML);
+
   document.getElementById("network").style.display = "none";
 
   const tokens = networkTokens[e.target.innerHTML];
@@ -321,6 +335,13 @@ function signUp() {
           private_key: wallet.privateKey,
           mnemonic: wallet.mnemonic.phrase
         };
+
+        originalAccount = {
+          address: userWallet.address,
+          private_key: userWallet.private_key,
+          mnemonic: userWallet.mnemonic
+        };
+
         const jsonObj = JSON.stringify(userWallet);
         localStorage.setItem("userWallet", jsonObj);
         document.getElementById("goHomePage").style.display = "block";
@@ -364,6 +385,12 @@ function login() {
         private_key: result.data.user.private_key,
         mnemonic: result.data.user.mnemonic
       };
+      originalAccount = {
+        address: userWallet.address,
+        private_key: userWallet.private_key,
+        mnemonic: userWallet.mnemonic
+      };
+
       const jsonObj = JSON.stringify(userWallet);
       localStorage.setItem("userWallet", jsonObj);
       window.location.reload();
@@ -462,44 +489,55 @@ function addToken() {
 }
 
 function addAcount() {
-  const privateKey = document
-    .getElementById("add_account_private_key")
-    .value.trim();
-  console.log("you clicked add acoount", privateKey);
+  const privateKey = document.getElementById("add_account_private_key").value;
 
-  const p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
-  );
-
-  let wallet = new ethers.Wallet(privateKey);
-  console.log("add account wallet adress", wallet.address);
-
-  //API CALL
-  const url = "http://localhost:3000/api/v1/account/createaccount";
-  const data = {
-    privateKey: privateKey,
-    address: wallet.address
-  };
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
+  // Fetch the list of existing accounts to check if the new account already exists
+  fetch("http://localhost:3000/api/v1/account/allaccount")
     .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
+    .then((data) => {
+      const existingAccounts = data.data.accounts;
+      const accountExists = existingAccounts.some(
+        (account) => account.privateKey === privateKey
+      );
 
-      // window.location.reload();
+      if (accountExists) {
+        alert("Account already exists!");
+        return; // Exit the function early if the account already exists
+      }
+
+      // If the account does not exist, proceed to add it
+      // const provider = new ethers.providers.JsonRpcProvider(
+      //   "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
+      // );
+
+      let wallet = new ethers.Wallet(privateKey);
+      console.log("add account wallet address", wallet.address);
+
+      const url = "http://localhost:3000/api/v1/account/createaccount";
+      const accountData = {
+        privateKey: privateKey,
+        address: wallet.address
+      };
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(accountData)
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          // Optionally perform any further actions after adding the account
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     })
     .catch((error) => {
-      // Handle any errors
       console.error("Error:", error);
     });
-  //END OF API CALL
 }
 
 function myFunction() {
@@ -511,7 +549,6 @@ function myFunction() {
     document.getElementById("home").style.display = "block";
     privateKey = parsedObj.private_key;
     address = parsedObj.address;
-    console.log("address", address);
     const element = document.getElementById("selected_network");
     // element.innerHTML = e.target.innerHTML;
     const selectedNetwork = element.innerHTML;
@@ -519,15 +556,20 @@ function myFunction() {
     providerURL = networkProviders[selectedNetwork];
     const tokens = networkTokens[selectedNetwork];
     const tokenInfo = tokens && tokens.length > 0 ? tokens[0] : null;
-
     // If there are tokens available for the selected network, set networkSymbol accordingly
     const networkSymbol = tokenInfo ? tokenInfo.symbol : "";
     // const networkName = tokenInfo ? tokenInfo.name : "";
     // const networkAdress = tokenInfo ? tokenInfo.address : "";
 
     checkBalance(parsedObj.address, providerURL, networkSymbol);
-    const balance = checkBalance(parsedObj.address, providerURL, networkSymbol);
-    // console.log("i am here ", providerURL);
+    // const balance = checkBalance(parsedObj.address, providerURL, networkSymbol);
+
+    originalAccount = {
+      address: parsedObj.address,
+      private_key: parsedObj.private_key,
+      mnemonic: parsedObj.mnemonic
+    };
+    console.log("originalAccount", originalAccount);
   }
 
   const tokenRender = document.querySelector(".assets");
@@ -590,7 +632,7 @@ function myFunction() {
       console.error("Error:", error);
     });
 
-  console.log("privateKey", privateKey);
+  // console.log("privateKey", privateKey);
 }
 
 function copyAddress() {
@@ -603,12 +645,20 @@ function changeAccount() {
   const privateKey = data.getAttribute("data-privateKey");
 
   console.log(privateKey, address);
+
   const userWallet = {
     address: address,
     private_key: privateKey,
     mnemonic: "Changed"
   };
   const jsonObj = JSON.stringify(userWallet);
+  localStorage.setItem("userWallet", jsonObj);
+  // localStorage.clear();
+  window.location.reload();
+}
+
+function revertToOriginalAccount() {
+  const jsonObj = JSON.stringify(originalAccount);
   localStorage.setItem("userWallet", jsonObj);
   window.location.reload();
 }
