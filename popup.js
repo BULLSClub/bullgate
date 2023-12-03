@@ -45,7 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("openAccountImport")
     .addEventListener("click", openImportModel);
-  document.getElementById("close_").addEventListener("click", closeImportModel);
+  document
+    .getElementById("close_import_account")
+    .addEventListener("click", closeImportModel);
   document.getElementById("add_new_token").addEventListener("click", addToken);
   document
     .getElementById("add_New_Account")
@@ -419,7 +421,7 @@ function goHomePage() {
 }
 
 function openImportModel() {
-  document.getElementById("").style.display = "block";
+  document.getElementById("import_account").style.display = "block";
   document.getElementById("home").style.display = "none";
 }
 
@@ -460,14 +462,18 @@ function addToken() {
 }
 
 function addAcount() {
-  const privateKey = document.getElementById("add_account_private_key").value;
+  const privateKey = document
+    .getElementById("add_account_private_key")
+    .value.trim();
+  console.log("you clicked add acoount", privateKey);
+
   const p = "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mainnet.g.alchemy.com/v2/vi_pti5lUdojQTEMDptzwQ6q3UxjTwEh"
   );
 
-  let wallet = new ethers.Wallet(privateKey, provider);
-  console.log(wallet.address);
+  let wallet = new ethers.Wallet(privateKey);
+  console.log("add account wallet adress", wallet.address);
 
   //API CALL
   const url = "http://localhost:3000/api/v1/account/createaccount";
@@ -505,6 +511,7 @@ function myFunction() {
     document.getElementById("home").style.display = "block";
     privateKey = parsedObj.private_key;
     address = parsedObj.address;
+    console.log("address", address);
     const element = document.getElementById("selected_network");
     // element.innerHTML = e.target.innerHTML;
     const selectedNetwork = element.innerHTML;
@@ -520,7 +527,7 @@ function myFunction() {
 
     checkBalance(parsedObj.address, providerURL, networkSymbol);
     const balance = checkBalance(parsedObj.address, providerURL, networkSymbol);
-    console.log("i am here ", providerURL);
+    // console.log("i am here ", providerURL);
   }
 
   const tokenRender = document.querySelector(".assets");
@@ -576,13 +583,14 @@ function myFunction() {
       );
 
       accountRender.innerHTML = accounts;
+      // console.log("accounts", accounts);
     })
     .catch((error) => {
       // Handle any errors
       console.error("Error:", error);
     });
 
-  console.log(privateKey);
+  console.log("privateKey", privateKey);
 }
 
 function copyAddress() {
