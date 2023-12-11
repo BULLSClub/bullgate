@@ -96,7 +96,6 @@ body {
   font-size: 1.2em;
   cursor: pointer;
 }
-
 .import_account .connectWallet,
 .import_token .connectWallet,
 .transfer_form .connectWallet,
@@ -140,10 +139,6 @@ body {
 }
 
 /* //FORM  */
-
-.nft_form {
-  /* display: none; */
-}
 
 .transfer_form {
   display: none;
@@ -511,9 +506,50 @@ textarea {
   display: none;
 }
 
+.nftModal {
+  /* display: none; */
+  height: 100%;
+}
+
+.nftContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  /* justify-content: center; */
+  margin-top: 20px;
+}
+
+.nftCard {
+  /* width: 40px; */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nftImage {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.nftName {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.nftDescription {
+  font-size: 14px;
+  color: #555;
+}
+
 .import_account {
   display: none;
 }
+
 .lists {
   display: grid;
   grid-template-columns: 0.1fr 5fr;

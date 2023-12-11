@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("accountList")
     .addEventListener("click", changeAccount);
+
   document.getElementById("userAddress").addEventListener("click", copyAddress);
   document.getElementById("loginAccount").addEventListener("click", loginUser);
   document
@@ -40,7 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("open_activity")
     .addEventListener("click", openActivity);
 
-  document.getElementById("open_nft").addEventListener("click", openNFT);
+  document
+    .getElementById("open_nft")
+    .addEventListener("click", openImportModel);
+  document.getElementById("close_nft").addEventListener("click", closeNFT);
 
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
 
@@ -54,9 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("add_New_Account")
     .addEventListener("click", addAcount);
-  document
-    .getElementById("Go_Back_To_Original_Account")
-    .addEventListener("click", revertToOriginalAccount);
+  // document
+  //   .getElementById("Go_Back_To_Original_Account")
+  //   .addEventListener("click", revertToOriginalAccount);
 
   document.getElementById("terms_link").addEventListener("click", function () {
     window.open(
@@ -78,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
 let providerURL;
 let scanURL;
 let originalAccount = {};
+let NftData = [];
 
 const networkProviders = {
   "Ethereum Mainnet":
@@ -356,6 +361,73 @@ function signUp() {
   }
 }
 
+async function fetchNFTData(address, chain) {
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      "x-api-key": "4fa1eca90cc147c5aba07095c9ce5ab2"
+    }
+  };
+  try {
+    const response = await fetch(
+      `https://api.opensea.io/api/v2/chain/${chain}/account/${address}/nfts`,
+
+      options
+    );
+    const data = await response?.json();
+    console.log(data);
+    const nftContainer = document.querySelector(".nftContainer");
+    nftContainer.innerHTML = "";
+
+    data?.nfts?.forEach((asset) => {
+      const imageUrl = asset.image_url;
+      const name = asset.name;
+      const description = asset.description;
+
+      const nftCard = document.createElement("div");
+      nftCard.classList.add("nftCard");
+
+      const nftImage = document.createElement("img");
+      nftImage.src = imageUrl;
+      nftImage.classList.add("nftImage");
+
+      const nftName = document.createElement("h3");
+      nftName.classList.add("nftName");
+      nftName.textContent = name;
+
+      const nftDescription = document.createElement("p");
+      nftDescription.textContent = description;
+      nftDescription.classList.add("nftDescription");
+
+      nftCard.appendChild(nftImage);
+      nftCard.appendChild(nftName);
+      nftCard.appendChild(nftDescription);
+      nftContainer.appendChild(nftCard);
+    });
+  } catch (error) {
+    console.log("Error fetching NFTs:", error);
+  }
+}
+
+function openNFT() {
+  const str = localStorage.getItem("userWallet");
+  const parsedObj = JSON.parse(str);
+  if (parsedObj?.address) {
+    const element = document.getElementById("selected_network");
+    const selectedNetwork = element.innerHTML;
+    providerURL = networkProviders[selectedNetwork];
+    const tokens = networkTokens[selectedNetwork];
+    const tokenInfo = tokens && tokens.length > 0 ? tokens[0] : null;
+    const networkName = tokenInfo ? tokenInfo.name : "";
+    const chain = networkName.toLowerCase();
+    fetchNFTData(parsedObj.address, chain);
+  }
+
+  document.getElementById("nftModal").style.display = "block";
+  document.getElementById("home").style.display = "none";
+}
+
 function login() {
   document.getElementById("login_form").style.display = "none";
   document.getElementById("center").style.display = "block";
@@ -427,11 +499,6 @@ function importGoBack() {
   document.getElementById("home").style.display = "block";
 }
 
-function openNFT() {
-  document.getElementById("nft_form").style.display = "block";
-  document.getElementById("home").style.display = "none";
-}
-
 function openActivity() {
   document.getElementById("activity").style.display = "block";
   document.getElementById("assets").style.display = "none";
@@ -444,6 +511,11 @@ function openAssets() {
 
 function goHomePage() {
   document.getElementById("create_popUp").style.display = "none";
+  document.getElementById("home").style.display = "block";
+}
+
+function closeNFT() {
+  document.getElementById("nftModal").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
 
@@ -543,7 +615,6 @@ function addAcount() {
 function myFunction() {
   const str = localStorage.getItem("userWallet");
   const parsedObj = JSON.parse(str);
-
   if (parsedObj.address) {
     document.getElementById("LoginUser").style.display = "none";
     document.getElementById("home").style.display = "block";
@@ -558,22 +629,25 @@ function myFunction() {
     const tokenInfo = tokens && tokens.length > 0 ? tokens[0] : null;
     // If there are tokens available for the selected network, set networkSymbol accordingly
     const networkSymbol = tokenInfo ? tokenInfo.symbol : "";
-    // const networkName = tokenInfo ? tokenInfo.name : "";
+    const networkName = tokenInfo ? tokenInfo.name : "";
+
     // const networkAdress = tokenInfo ? tokenInfo.address : "";
 
     checkBalance(parsedObj.address, providerURL, networkSymbol);
     // const balance = checkBalance(parsedObj.address, providerURL, networkSymbol);
+    fetchNFTData(parsedObj.address, networkName.toLowerCase());
 
     originalAccount = {
       address: parsedObj.address,
       private_key: parsedObj.private_key,
       mnemonic: parsedObj.mnemonic
     };
-    console.log("originalAccount", originalAccount);
+    // console.log("originalAccount", originalAccount);
   }
 
   const tokenRender = document.querySelector(".assets");
   const accountRender = document.querySelector(".accountList");
+  const nfts = document.querySelector(".nftContainer");
   //API CALL
 
   fetch("http://localhost:3000/api/v1/tokens/alltoken")
@@ -637,6 +711,13 @@ function myFunction() {
 
 function copyAddress() {
   navigator.clipboard.writeText(address);
+}
+
+const innerData = document.getElementsByClassName("lists");
+for (let i = 0; i < innerData?.length; i++) {
+  innerData[i]?.addEventListener("click", () => {
+    console.log(i);
+  });
 }
 
 function changeAccount() {
