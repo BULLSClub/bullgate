@@ -41,9 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("open_activity")
     .addEventListener("click", openActivity);
 
-  document
-    .getElementById("open_nft")
-    .addEventListener("click", openImportModel);
+  document.getElementById("open_nft").addEventListener("click", openNFT);
   document.getElementById("close_nft").addEventListener("click", closeNFT);
 
   document.getElementById("goHomePage").addEventListener("click", goHomePage);
@@ -93,64 +91,64 @@ const networkProviders = {
   "BASE Mainnet":
     "https://base-mainnet.g.alchemy.com/v2/Yv1VUI69q5-O5ZdMmBemjQPEb2rxAn-f",
   "Goerli test network":
-    "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp"
+    "https://eth-goerli.g.alchemy.com/v2/cnURwhLXPAyeILTBwvvC3qw-iVg2VMmp",
 };
 const networkTokens = {
   "Ethereum Mainnet": [
     {
       name: "ETHER",
       address: "0x0000000000000000000000000000000000000000",
-      symbol: "ETH"
-    }
+      symbol: "ETH",
+    },
   ],
   "Polygon Mainnet": [
     {
       name: "MATIC",
       address: "0x0000000000000000000000000000000000001010",
-      symbol: "MATIC"
+      symbol: "MATIC",
     },
     {
       name: "BULLSCLUB",
       address: "0x489F35233247C4fA43B81ed09532673e7b801c39",
-      symbol: "BULLSC"
-    }
+      symbol: "BULLSC",
+    },
   ],
   "Binance Smart Chain": [
     {
       name: "BNB",
       address: "0x0000000000000000000000000000000000000000",
-      symbol: "BNB"
+      symbol: "BNB",
     },
     {
       name: "BULLSCLUB",
       address: "0x0dB1Ac300A55Ec29519E3440b17A4A4ea1b570f7",
-      symbol: "BULLS"
-    }
+      symbol: "BULLS",
+    },
   ],
   "BASE Mainnet": [
     {
       name: "ETHER",
       address: "0x4200000000000000000000000000000000000006",
-      symbol: "ETH"
+      symbol: "ETH",
     },
     {
       name: "BULLS",
       address: "0x1D81EC956fb906Ad4c863a68cCCB3831550963c1",
-      symbol: "BULLS"
+      symbol: "BULLS",
     },
     {
       name: "BEARS-BULLS",
       address: " 0xC6c078038ecF7f3D82b1A9002B0f9f1bBd05e15D",
-      symbol: "BEARS"
-    }
+      symbol: "BEARS",
+    },
   ],
   "Goerli test network": [
     {
       name: "ETHER",
       address: "0xdD69DB25F6D620A7baD3023c5d32761D353D3De9",
-      symbol: "ETH"
-    }
-  ]
+      symbol: "ETH",
+    },
+  ],
 };
 
 function getOpenNetwork() {
@@ -217,12 +215,11 @@ function handler() {
 
   const privateKey =
     "f2211d726b37710b750fa80da41f73172853fa2ac82181aca2ff4233e3c6ce9f";
-  const userAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
   const wallet = new ethers.Wallet(privateKey, provider);
   const tx = {
     to: address,
-    value: ethers.utils.parseEther(amount)
+    value: ethers.utils.parseEther(amount),
   };
 
   var a = document.getElementById("link");
@@ -314,15 +311,15 @@ function signUp() {
       passwordConfirm: passwordConfirm,
       address: wallet.address,
       private_key: wallet.privateKey,
-      mnemonic: wallet.mnemonic.phrase
+      mnemonic: wallet.mnemonic.phrase,
     };
 
     fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((result) => {
@@ -338,13 +335,13 @@ function signUp() {
         const userWallet = {
           address: wallet.address,
           private_key: wallet.privateKey,
-          mnemonic: wallet.mnemonic.phrase
+          mnemonic: wallet.mnemonic.phrase,
         };
 
         originalAccount = {
           address: userWallet.address,
           private_key: userWallet.private_key,
-          mnemonic: userWallet.mnemonic
+          mnemonic: userWallet.mnemonic,
         };
 
         const jsonObj = JSON.stringify(userWallet);
@@ -366,8 +363,8 @@ async function fetchNFTData(address, chain) {
     method: "GET",
     headers: {
       accept: "application/json",
-      "x-api-key": "4fa1eca90cc147c5aba07095c9ce5ab2"
-    }
+      "x-api-key": "4fa1eca90cc147c5aba07095c9ce5ab2",
+    },
   };
   try {
     const response = await fetch(
@@ -438,15 +435,15 @@ function login() {
   const url = "http://localhost:3000/api/v1/user/login";
   const data = {
     email: email,
-    password: password
+    password: password,
   };
 
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -455,12 +452,12 @@ function login() {
       const userWallet = {
         address: result.data.user.address,
         private_key: result.data.user.private_key,
-        mnemonic: result.data.user.mnemonic
+        mnemonic: result.data.user.mnemonic,
       };
       originalAccount = {
         address: userWallet.address,
         private_key: userWallet.private_key,
-        mnemonic: userWallet.mnemonic
+        mnemonic: userWallet.mnemonic,
       };
 
       const jsonObj = JSON.stringify(userWallet);
@@ -538,14 +535,14 @@ function addToken() {
   const data = {
     name: name,
     address: address,
-    symbol: symbol
+    symbol: symbol,
   };
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -588,15 +585,15 @@ function addAcount() {
       const url = "http://localhost:3000/api/v1/account/createaccount";
       const accountData = {
         privateKey: privateKey,
-        address: wallet.address
+        address: wallet.address,
       };
 
       fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(accountData)
+        body: JSON.stringify(accountData),
       })
         .then((response) => response.json())
         .then((result) => {
@@ -640,7 +637,7 @@ function myFunction() {
     originalAccount = {
       address: parsedObj.address,
       private_key: parsedObj.private_key,
-      mnemonic: parsedObj.mnemonic
+      mnemonic: parsedObj.mnemonic,
     };
     // console.log("originalAccount", originalAccount);
   }
@@ -699,14 +696,14 @@ function myFunction() {
       );
 
       accountRender.innerHTML = accounts;
-      // console.log("accounts", accounts);
+      // console.log("accounts", data);
     })
     .catch((error) => {
       // Handle any errors
       console.error("Error:", error);
     });
 
-  // console.log("privateKey", privateKey);
+  console.log("privateKey", privateKey);
 }
 
 function copyAddress() {
@@ -730,7 +727,7 @@ function changeAccount() {
   const userWallet = {
     address: address,
     private_key: privateKey,
-    mnemonic: "Changed"
+    mnemonic: "Changed",
   };
   const jsonObj = JSON.stringify(userWallet);
   localStorage.setItem("userWallet", jsonObj);
